@@ -14,8 +14,8 @@ This does not affect chat, code, commit messages, or other non-prose output.
 ## Install
 
 ```sh
-git clone <repo-url>
-cd em-dash
+git clone https://github.com/joefrancis505/em-dashfatwa.git
+cd em-dashfatwa
 ./install.sh
 ```
 

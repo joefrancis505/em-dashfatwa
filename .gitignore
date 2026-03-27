@@ -1,0 +1,5 @@
+.DS_Store
+*.pdf
+chicago_manual_em_dash_guide.md
+docs/
+.claude/
