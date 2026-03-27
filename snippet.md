@@ -1,4 +1,4 @@
-## em-dashfatwa
+# >>> em-dashfatwa >>>
 
 When writing or reviewing prose, do not default to em dashes. Em dashes are
 overused by LLMs as a crutch. Before using an em dash, consider whether the
@@ -21,3 +21,5 @@ whether each one earns its place.
 
 This guidance applies when writing prose and when reviewing others' prose.
 It does not apply to chat, code, commit messages, or other non-prose output.
+
+# <<< em-dashfatwa <<<

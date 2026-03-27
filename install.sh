@@ -1,31 +1,39 @@
 #!/bin/bash
-set -euo pipefail
+set -e
 
-CLAUDE_DIR="$HOME/.claude"
-CLAUDE_MD="$CLAUDE_DIR/CLAUDE.md"
-SNIPPET="$(dirname "$0")/snippet.md"
-MARKER="## em-dashfatwa"
+REPO_URL="https://raw.githubusercontent.com/joefrancis505/em-dashfatwa/main/snippet.md"
+CLAUDE_MD="${CLAUDE_MD:-$HOME/.claude/CLAUDE.md}"
+CLAUDE_DIR="$(dirname "$CLAUDE_MD")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" 2>/dev/null && pwd)" || SCRIPT_DIR=""
+START_MARKER="# >>> em-dashfatwa >>>"
+END_MARKER="# <<< em-dashfatwa <<<"
 
-if [ ! -f "$SNIPPET" ]; then
-  echo "Error: snippet.md not found next to this script." >&2
-  exit 1
-fi
+# Fetch directives: try GitHub first, fall back to local file
+DIRECTIVES=$(curl -fsSL "$REPO_URL" 2>/dev/null) || {
+    if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/snippet.md" ]; then
+        echo "Could not reach GitHub. Using local copy."
+        DIRECTIVES=$(cat "$SCRIPT_DIR/snippet.md")
+    else
+        echo "Error: Could not fetch directives from GitHub and no local copy available."
+        exit 1
+    fi
+}
 
 mkdir -p "$CLAUDE_DIR"
-touch "$CLAUDE_MD"
 
-if grep -qF "$MARKER" "$CLAUDE_MD"; then
-  # Remove existing em-dashfatwa section before re-appending
-  # Deletes from "## em-dashfatwa" to the next "## " heading or end of file
-  sed -i.bak "/^## em-dashfatwa$/,/^## /{/^## em-dashfatwa$/d;/^## /!d;}" "$CLAUDE_MD"
-  rm -f "$CLAUDE_MD.bak"
-  echo "Replacing existing em-dashfatwa installation."
+# Remove existing install if present
+if [ -f "$CLAUDE_MD" ] && grep -q '>>> em-dashfatwa' "$CLAUDE_MD"; then
+    sed -i '' "/$START_MARKER/,/$END_MARKER/d" "$CLAUDE_MD" 2>/dev/null \
+        || sed -i "/$START_MARKER/,/$END_MARKER/d" "$CLAUDE_MD"
+    sed -i '' '/^$/N;/^\n$/d' "$CLAUDE_MD" 2>/dev/null \
+        || sed -i '/^$/N;/^\n$/d' "$CLAUDE_MD"
+    echo "Updating existing em-dashfatwa installation."
 fi
 
-# Ensure a blank line before appending
-if [ -s "$CLAUDE_MD" ] && [ "$(tail -c 1 "$CLAUDE_MD")" != "" ]; then
-  echo "" >> "$CLAUDE_MD"
+# Append directives
+if [ -f "$CLAUDE_MD" ] && [ -s "$CLAUDE_MD" ]; then
+    echo "" >> "$CLAUDE_MD"
 fi
+echo "$DIRECTIVES" >> "$CLAUDE_MD"
 
-cat "$SNIPPET" >> "$CLAUDE_MD"
 echo "em-dashfatwa installed into $CLAUDE_MD"

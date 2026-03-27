@@ -1,21 +1,24 @@
 #!/bin/bash
-set -euo pipefail
+set -e
 
-CLAUDE_MD="$HOME/.claude/CLAUDE.md"
-MARKER="## em-dashfatwa"
+CLAUDE_MD="${CLAUDE_MD:-$HOME/.claude/CLAUDE.md}"
+START_MARKER="# >>> em-dashfatwa >>>"
+END_MARKER="# <<< em-dashfatwa <<<"
 
 if [ ! -f "$CLAUDE_MD" ]; then
-  echo "No CLAUDE.md found at $CLAUDE_MD. Nothing to uninstall."
-  exit 0
+    echo "No CLAUDE.md found at $CLAUDE_MD"
+    exit 0
 fi
 
-if ! grep -qF "$MARKER" "$CLAUDE_MD"; then
-  echo "em-dashfatwa is not installed. Nothing to uninstall."
-  exit 0
+if ! grep -q '>>> em-dashfatwa' "$CLAUDE_MD"; then
+    echo "em-dashfatwa is not installed in $CLAUDE_MD"
+    exit 0
 fi
 
-# Remove from "## em-dashfatwa" to the next "## " heading or end of file
-sed -i.bak "/^## em-dashfatwa$/,/^## /{/^## em-dashfatwa$/d;/^## /!d;}" "$CLAUDE_MD"
-rm -f "$CLAUDE_MD.bak"
+sed -i '' "/$START_MARKER/,/$END_MARKER/d" "$CLAUDE_MD" 2>/dev/null \
+    || sed -i "/$START_MARKER/,/$END_MARKER/d" "$CLAUDE_MD"
 
-echo "em-dashfatwa uninstalled from $CLAUDE_MD"
+sed -i '' '/^$/N;/^\n$/d' "$CLAUDE_MD" 2>/dev/null \
+    || sed -i '/^$/N;/^\n$/d' "$CLAUDE_MD"
+
+echo "em-dashfatwa removed from $CLAUDE_MD"

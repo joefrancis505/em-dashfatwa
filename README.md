@@ -13,16 +13,35 @@ This does not affect chat, code, commit messages, or other non-prose output.
 
 ## Install
 
+One-liner (no clone required):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/joefrancis505/em-dashfatwa/main/install.sh | bash
+```
+
+Or clone and run locally:
+
 ```sh
 git clone https://github.com/joefrancis505/em-dashfatwa.git
 cd em-dashfatwa
 ./install.sh
 ```
 
-This appends the directives to your `~/.claude/CLAUDE.md`. Safe to run
-multiple times (idempotent).
+This appends the directives to your `~/.claude/CLAUDE.md`. Your existing
+content is preserved.
+
+## Update
+
+Run the install command again. It replaces the existing directives with
+the latest version from GitHub.
 
 ## Uninstall
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/joefrancis505/em-dashfatwa/main/uninstall.sh | bash
+```
+
+Or if you cloned the repo:
 
 ```sh
 ./uninstall.sh
