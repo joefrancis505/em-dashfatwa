@@ -19,6 +19,14 @@ Reserve em dashes for situations where they are genuinely the best choice:
 If a passage contains more than one em dash (or pair), reread it and ask
 whether each one earns its place.
 
+When removing an em dash, apply equal scrutiny to the replacement. Do not
+default to commas in the same way you would default to em dashes. Read the
+corrected sentence as a whole and verify it is grammatically sound. In
+particular, check that the replacement punctuation can bear the syntactic
+weight the em dash was carrying: if the em dash was separating clauses or
+introducing a dependent clause in a comma-heavy sentence, a comma may not
+be a valid substitute.
+
 This guidance applies when writing prose and when reviewing others' prose.
 It does not apply to chat, code, commit messages, or other non-prose output.
 
