@@ -1,5 +1,10 @@
 # em-dashfatwa
 
+> **Status (July 2026):** Retired from my own configuration. The
+> standing instructions cost more attention than they saved with the
+> current model generation. The repo remains available and the
+> installer works as described below.
+
 LLMs overuse em dashes. This is a set of writing directives for Claude Code
 that corrects the habit, based on the Chicago Manual of Style (17th Edition,
 sections 6.82-6.88).
